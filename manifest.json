@@ -1,6 +1,6 @@
 {
   "name": "Finance Tracker",
-  "short_name": "Finanze",
+  "short_name": "Finance Tracker",
   "description": "La tua app personale per la gestione delle spese",
   "start_url": "/",
   "display": "standalone",
