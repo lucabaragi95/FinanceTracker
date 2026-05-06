@@ -783,7 +783,7 @@ function txHTML(t) {
   const label = t.note || t.sottocategoria || t.categoria;
   const d = new Date(t.data);
   const dateStr = d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
-  return `<div class="tx-item" onclick="showDetail('${t.id}')">
+  return `<div class="tx-item" onclick="showDetail('${String(t.id)}')">
     <div class="tx-emoji">${getIcon(t.categoria)}</div>
     <div class="tx-info">
       <div class="tx-name">${label}</div>
@@ -933,7 +933,7 @@ function showCatDetail(cat, month, year) {
   document.getElementById('cat-detail-title').textContent = getIcon(cat) + ' ' + cat + ' — ' + MESI[month];
   document.getElementById('cat-detail-body').innerHTML = txs.length
     ? txs.map(t => `
-        <div class="tx-item" onclick="closeModal('modal-cat-detail'); showDetail('${t.id}')">
+        <div class="tx-item" onclick="closeModal('modal-cat-detail'); showDetail('${String(t.id)}')">
           <div class="tx-emoji">${getIcon(t.categoria)}</div>
           <div class="tx-info">
             <div class="tx-name">${t.note || t.sottocategoria || t.categoria}</div>
@@ -1091,7 +1091,7 @@ async function saveTransaction() {
 
 // ── DETAIL ────────────────────────────────────────────────────────────────────
 function showDetail(id) {
-  const t = transactions.find(tx => tx.id === id);
+  const t = transactions.find(tx => String(tx.id) === String(id));
   if (!t) return;
   currentDetailId = id;
   const isOut = t.tipo === 'Uscita';
@@ -1132,7 +1132,7 @@ function showDetail(id) {
 async function deleteTransaction(id) {
   showLoading('Eliminazione...');
   await sbDelete('transazioni', id);
-  transactions = transactions.filter(t => t.id !== id);
+  transactions = transactions.filter(t => String(t.id) !== String(id));
   hideLoading();
   closeModal('modal-detail');
   renderHome();
@@ -1140,7 +1140,7 @@ async function deleteTransaction(id) {
 }
 
 function editTransaction() {
-  const t = transactions.find(tx => tx.id === currentDetailId);
+  const t = transactions.find(tx => String(tx.id) === String(currentDetailId));
   if (!t) return;
   closeModal('modal-detail');
   editingTxId = currentDetailId;
